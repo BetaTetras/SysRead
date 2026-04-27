@@ -9,7 +9,9 @@ netinfo initNetinfo(){
     FILE* f = fopen("/proc/net/dev", "r");
     netinfo net;
     if(f == NULL){
-        
+        net.interfaces = NULL;
+        net.count = 0;
+        return net;
     }
 
     net.interfaces = (interface*)calloc(1, sizeof(interface));
