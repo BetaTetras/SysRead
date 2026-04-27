@@ -25,6 +25,9 @@ String strbcpy(String str, int Start, int End){
 }
 
 int StringToInt(String str){
+    if(str == NULL){
+        return 0;
+    }
     int res = 0;
     int boolNeg = 0;
     int i = 0;
