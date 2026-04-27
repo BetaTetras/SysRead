@@ -7,15 +7,17 @@
 
 typedef char* String;
 
-String strbcpy(String str,int Start,int End){
-    String res = (String)calloc(End - Start +1,sizeof(char));
+String strbcpy(String str, int Start, int End){
+    if(str == NULL || Start < 0 || End < Start){
+        return NULL;
+    }
 
-    int x =0;
-    for(int i=0;i<(int)strlen(str);i++){
-        if(i>= Start && i<= End){
-            res[x] = str[i];
-            x++;
-        }
+    int len = strlen(str);
+    String res = (String)calloc(End - Start + 2, sizeof(char));
+
+    int x = 0;
+    for(int i = Start; i <= End && i < len; i++){
+        res[x++] = str[i];
     }
     res[x] = '\0';
 
@@ -46,7 +48,41 @@ int StringToInt(String str){
     return boolNeg ? -res : res;
 }
 
+long StringToLong(String str){
+    if(str == NULL){
+        return 0;
+    }
+
+    long res = 0;
+    int boolNeg = 0;
+    int i = 0;
+
+    int len = strlen(str);
+    if(len == 0){
+        return 0;
+    }
+
+    if(str[len-1] == '\n'){
+        len--;
+    } 
+
+    if(str[0] == '-') {
+        boolNeg = 1;
+        i++;
+    }
+
+    for(; i < len; i++){
+        if(str[i] < '0' || str[i] > '9') return 0;
+        res = res * 10 + (str[i] - '0');
+    }
+
+    return boolNeg ? -res : res;
+}
+
 long long int StringToLongLong(String str){
+    if(str == NULL){
+        return 0;
+    }
     long long int res = 0;
     int boolNeg = 0;
     int i = 0;
@@ -77,28 +113,46 @@ int _strchr(String Input,char Element){
     return -1;
 }
 
-char** explode(char* str, int* size){
+char** explode(char* str, int* size, char** prev, int prevSize){
+    if(str == NULL){
+        return NULL;
+    }
+
+    if(prev != NULL){
+        for(int i = 0; i < prevSize; i++) free(prev[i]);
+        free(prev);
+    }
+
     int len = strlen(str);
-    char** lsOfElement = (char**)calloc(1,sizeof(char*));
+    char** lsOfElement = (char**)calloc(1, sizeof(char*));
     int _size = 0;
 
-    int index = 0;
-    for(int i=0;i<len;i++){
-        if(str[i] == ' '){
-            continue;
-        }else{
-        _size++;
-        lsOfElement = realloc(lsOfElement,_size * sizeof(char*));
-        lsOfElement[_size - 1] = (char*)calloc(256, sizeof(char));
-        index = 0;
-            while(str[i] != ' ' && str[i] != '\0'){
-                lsOfElement[_size - 1][index] = str[i];
-                index++;
-                i++;
-            }
-        }
+    for(int i = 0; i < len; i++){
+        if(str[i] == ' ') continue;
 
+        _size++;
+        lsOfElement = realloc(lsOfElement, _size * sizeof(char*));
+        lsOfElement[_size - 1] = (char*)calloc(256, sizeof(char));
+
+        int index = 0;
+        while(str[i] != ' ' && str[i] != '\0'){
+            lsOfElement[_size - 1][index] = str[i];
+            index++;
+            i++;
+        }
     }
+
     *size = _size;
     return lsOfElement;
+}
+
+double byteConverter(long long int byte, sizeType type){
+    switch(type){
+        case B:  return (double)byte;
+        case kB: return (double)byte / 1024.0;
+        case mB: return (double)byte / (1024.0 * 1024.0);
+        case gB: return (double)byte / (1024.0 * 1024.0 * 1024.0);
+        case tB: return (double)byte / (1024.0 * 1024.0 * 1024.0 * 1024.0);
+        default: return (double)byte;
+    }
 }

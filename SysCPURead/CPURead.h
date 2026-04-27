@@ -20,11 +20,14 @@ typedef struct {
     unsigned long long guest_nice;
 } TimeCPU;
 
-// Initialise la structure en lisant /proc/stat
-TimeCPU initTimeCpu();
+typedef struct{
+    float tempCPU;
+    float loadCPU;
+}cpuinfo;
 
-// Calcule le pourcentage d’utilisation CPU entre deux mesures
-float loadCPU();
-float tempCPU();
+// Initialise la structure en lisant /proc/stat
+TimeCPU TimeCpu();
+
+cpuinfo initCPUinfo();
 
 #endif

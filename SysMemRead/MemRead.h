@@ -7,14 +7,12 @@
 #include "../Tools/Tools.h"
 
 typedef struct{
-    float MemTotal;
-    float MemUse;
+    double MemTotal;
+    double MemUse;
+    double MemAvail;
     sizeType Type;
 }meminfo;
 
-int getMemTotal();
-int getMemAvailable();
-int getMemUse();
 meminfo initMeminfo(sizeType type);
 
 #endif

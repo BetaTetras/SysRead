@@ -10,13 +10,10 @@ typedef struct {
     String PATH;      // Chemin de la partition
     double StoTotal;  // Taille totale
     double StoUse;    // Taille utilisée
+    double StoAvail;  // Taille libre
     sizeType Type;    // Unité utilisée (B, kB, mB, gB, tB)
 } stoinfo;
 
-// Fonctions pour récupérer la taille d'une partition
-unsigned long long getStoTotal(String PATH);
-unsigned long long getStoAvailable(String PATH);
-unsigned long long getUse(String PATH);
 
 // Initialisation de la structure stoinfo
 stoinfo initStoinfo(String PATH, sizeType Type);
